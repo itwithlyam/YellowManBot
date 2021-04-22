@@ -6,11 +6,13 @@ module.exports = {
 	description: 'search something',
 	args: true,
 	usage: '<question>',
-	execute(message, args) {
-		const question = args.join('')
+	execute(message, args, _client) {
+		const question = args.join(' ')
 		waApi.getShort(question)
-			.then(answer => {message.channel.send(answer)} )
-			.catch(message.channel.send);
-		message.channel.send('If you get no answer, then consider rephrasing the question.')
+			.then(answer => message.reply(answer))
+			.catch(error => {
+				message.reply("sorry, no response available for:\n " + question);
+				console.error(error);
+			});
 	}
 }
